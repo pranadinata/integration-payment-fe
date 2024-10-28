@@ -1,11 +1,16 @@
+
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import { useRouter } from 'next/navigation';
+
+
 interface Props {
     name: string; // Define the expected prop type
 }
 
 const NavbarBack = ({ name }: Props) => {
+    const router = useRouter();
     const kembali = () => {
-        console.log('kembali');
+        router.push('/');
     };
 
     return (

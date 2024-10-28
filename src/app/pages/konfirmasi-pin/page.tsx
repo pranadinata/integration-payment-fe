@@ -7,10 +7,10 @@ import { useRouter } from 'next/navigation';
 
 import Swal from 'sweetalert2';
 
-const CreatePin = () => {
+const KonfirmasiPin = () => {
     const router = useRouter();
 
-    const { data, setPinUsers } = useUsers();
+    const { data , setSaldo, setStateSaldo, setTopUpType, setStateTopUpType} = useUsers();
     const [Pin, setPin] = useState(new Array(6).fill(''));
     const [activeIndex, setActiveIndex] = useState(0);
 
@@ -30,20 +30,27 @@ const CreatePin = () => {
 
             // Check if all fields are filled
             const emptyCount = newPin.filter(item => item === '').length;
-            // console.log(emptyCount)
+            
             if (emptyCount === 0) {
-                const pinInput = newPin.join(''); 
-               
-                setPinUsers(pinInput); 
-                Swal.fire({
-                    icon: "success",
-                    title: "Berhasil",
-                    text: "Berhasil menyimpan data",
-                    showConfirmButton: false,
-                    timer: 1500,
-                }).then(() => {
-                    router.push('/');
-                });
+                const pinInput = newPin.join('');
+                if(pinInput === data.pin){
+                    const total_saldo = data.state_saldo + data.saldo;
+                    setSaldo(total_saldo);
+                    setTopUpType(data.state_top_up_type);
+                    Swal.fire({
+                        icon: "success",
+                        title: "Berhasil",
+                        text: "Berhasil menyimpan data",
+                        showConfirmButton: false,
+                        timer: 1500,
+                    }).then(() => {
+                        setStateSaldo(0);
+                        setStateTopUpType('');
+                        router.push('/pages/detail-users');
+                    });
+                }else{
+                    console.log('pin tidak sama')
+                }
             }
         }
     };
@@ -58,7 +65,7 @@ const CreatePin = () => {
                             <img src="/logo/Logo_LRT_Jakarta.png" width={200} alt="Logo LRT Jakarta" />
                         </div>
                         <div className="flex justify-center">
-                            <p>Buat PIN Kamu!</p>
+                            <p>Konfirmasi PIN Kamu!</p>
                         </div>
                         <div className="flex justify-center py-5">
                             <div className="flex justify-center space-x-2 mt-4">
@@ -76,10 +83,9 @@ const CreatePin = () => {
                             </div>
                         </div>
                         <div className="container flex justify-center py-5">
-                            <img src="/logo/create_pin_logo.png" width={200} alt="Logo LRT Jakarta" />
+                            <p>Konfirmasi PIN Kamu!</p>
                         </div>
-                        <div className="container flex justify-center py-2">
-                            <p>Seluruh informasi kamu terlindungi</p>
+                        <div className="container flex justify-center py-10">
                         </div>
                     </section>
                 </div>
@@ -89,4 +95,4 @@ const CreatePin = () => {
     );
 };
 
-export default CreatePin;
+export default KonfirmasiPin;

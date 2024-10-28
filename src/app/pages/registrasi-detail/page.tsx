@@ -3,8 +3,12 @@ import Footer from "@/component/footer";
 import NavbarBack from "@/component/navbarBack";
 import { useUsers } from "@/component/data-users-provider";
 import { useState } from "react";
+import { useRouter } from 'next/navigation';
+
+import Swal from "sweetalert2";
 
 const RegistrasiDetail = () => {
+    const router = useRouter();
     const { data, setDetailData } = useUsers();
     const [formData, setFormData] = useState({
         nama: '',
@@ -26,7 +30,16 @@ const RegistrasiDetail = () => {
     }
 
     if(data.nama != '' && data.tanggal_lahir != '' && data.tempat_lahir != '' && data.email != ''){
-        console.log('bisa redirect');
+        Swal.fire({
+            icon: "success",
+            title: "Berhasil",
+            text: "Berhasil menyimpan data",
+            showConfirmButton: false,
+            timer: 1500,
+          }).then(() => {
+            router.push('/pages/create-pin');
+          });
+       
     }else{
         console.log('belum lengkap');
     }

@@ -6,6 +6,8 @@ import { useUsers } from "@/component/data-users-provider";
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
+import Swal from 'sweetalert2';
+
 
 const VerifikasiOtp = () => {
   const { data, setOtpUsers } = useUsers();
@@ -17,8 +19,6 @@ const VerifikasiOtp = () => {
   useEffect(()=>{
     alert("OTP anda : "+ data.otp);
   },[]);
-  
-  
 
   const fetchOtp = () => {
     const randomOtp = Math.floor(100000 + Math.random() * 900000).toString();
@@ -39,17 +39,25 @@ const VerifikasiOtp = () => {
         setActiveIndex(activeIndex + 1);
       }
     }
-    if(activeIndex == 5){
+    const emptyCount = otp.filter(item => item === '').length;
+    if(emptyCount == 0){
         const otpInput = otp.join('');
         if(otpInput === data.otp){
-            router.push('/pages/registrasi-detail');
+            Swal.fire({
+                icon: "success",
+                title: "Berhasil",
+                text: "Berhasil menyimpan data",
+                showConfirmButton: false,
+                timer: 1500,
+              }).then(() => {
+                router.push('/pages/registrasi-detail');
+              });
+            
         }else{
             console.log('otp anda salah');
         }
     }
   };
-
- 
 
   // Handle backspace click
   const handleBackspace = () => {

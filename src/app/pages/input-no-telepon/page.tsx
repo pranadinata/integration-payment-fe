@@ -7,7 +7,7 @@ import NavbarBack from "@/component/navbarBack";
 import { useState } from "react";
 import { useRouter } from 'next/navigation';
 import Footer from "@/component/footer";
-
+import Swal from "sweetalert2";
 
 const InputNoTelepon = () => {
 
@@ -18,7 +18,16 @@ const InputNoTelepon = () => {
         const randomOtp = Math.floor(100000 + Math.random() * 900000).toString();
         setOtpUsers(randomOtp);
         setNoTelp(NoTelp);
-        router.push('/pages/verifikasi-otp');
+        Swal.fire({
+            icon: "success",
+            title: "Berhasil",
+            text: "Berhasil menyimpan data",
+            showConfirmButton: false,
+            timer: 1500,
+          }).then(() => {
+            router.push('/pages/verifikasi-otp');
+          });
+        
     }
 
     const handleInputChange = (event: any) => {
