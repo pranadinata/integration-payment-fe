@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import Footer from "@/component/footer";
 import NavbarBack from "@/component/navbarBack";
@@ -25,20 +26,27 @@ const RegistrasiDetail = () => {
         });
        
     };
-    const cekData = () => {
-        console.log(data)
-    }
+
 
     if(data.nama != '' && data.tanggal_lahir != '' && data.tempat_lahir != '' && data.email != ''){
-        Swal.fire({
-            icon: "success",
-            title: "Berhasil",
-            text: "Berhasil menyimpan data",
-            showConfirmButton: false,
-            timer: 1500,
-          }).then(() => {
-            router.push('/pages/create-pin');
-          });
+        fetch('/api/logs', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ level: 'info', message: `Users berhasil mengubah detail ` + data.nama }),
+        }).then(()=>{
+            Swal.fire({
+                icon: "success",
+                title: "Berhasil",
+                text: "Berhasil menyimpan data",
+                showConfirmButton: false,
+                timer: 1500,
+              }).then(() => {
+                router.push('/pages/create-pin');
+              });
+        });
+       
        
     }else{
         console.log('belum lengkap');

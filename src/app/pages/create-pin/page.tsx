@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 import Footer from "@/component/footer";
 import NavbarBack from "@/component/navbarBack";
@@ -10,7 +11,7 @@ import Swal from 'sweetalert2';
 const CreatePin = () => {
     const router = useRouter();
 
-    const { data, setPinUsers } = useUsers();
+    const { setPinUsers } = useUsers();
     const [Pin, setPin] = useState(new Array(6).fill(''));
     const [activeIndex, setActiveIndex] = useState(0);
 
@@ -34,16 +35,25 @@ const CreatePin = () => {
             if (emptyCount === 0) {
                 const pinInput = newPin.join(''); 
                
-                setPinUsers(pinInput); 
-                Swal.fire({
-                    icon: "success",
-                    title: "Berhasil",
-                    text: "Berhasil menyimpan data",
-                    showConfirmButton: false,
-                    timer: 1500,
-                }).then(() => {
-                    router.push('/');
-                });
+                setPinUsers(pinInput);
+                fetch('/api/logs', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ level: 'info', message: `Users berhasil membuat pin `+ pinInput }),
+                }).then(()=>{
+                    Swal.fire({
+                        icon: "success",
+                        title: "Berhasil",
+                        text: "Berhasil menyimpan data",
+                        showConfirmButton: false,
+                        timer: 1500,
+                    }).then(() => {
+                        router.push('/');
+                    });
+                }); 
+                
             }
         }
     };

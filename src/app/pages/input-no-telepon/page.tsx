@@ -8,16 +8,28 @@ import { useState } from "react";
 import { useRouter } from 'next/navigation';
 import Footer from "@/component/footer";
 import Swal from "sweetalert2";
+// 
 
 const InputNoTelepon = () => {
 
     const { setNoTelp, setOtpUsers } = useUsers();
     const [NoTelp, setNoTelpUsers] = useState('');
     const router = useRouter();
-    const kirimOtp = () =>{
+    
+    const kirimOtp = async () =>{
         const randomOtp = Math.floor(100000 + Math.random() * 900000).toString();
         setOtpUsers(randomOtp);
         setNoTelp(NoTelp);
+       
+
+        await fetch('/api/logs', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ level: 'info', message: `Berhasil set no telp ${NoTelp} dan kirim Otp ${randomOtp}` }),
+        });
+
         Swal.fire({
             icon: "success",
             title: "Berhasil",
@@ -29,6 +41,7 @@ const InputNoTelepon = () => {
           });
         
     }
+    
 
     const handleInputChange = (event: any) => {
         const { value } = event.target;

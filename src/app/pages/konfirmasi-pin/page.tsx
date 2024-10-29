@@ -37,19 +37,45 @@ const KonfirmasiPin = () => {
                     const total_saldo = data.state_saldo + data.saldo;
                     setSaldo(total_saldo);
                     setTopUpType(data.state_top_up_type);
-                    Swal.fire({
-                        icon: "success",
-                        title: "Berhasil",
-                        text: "Berhasil menyimpan data",
-                        showConfirmButton: false,
-                        timer: 1500,
-                    }).then(() => {
-                        setStateSaldo(0);
-                        setStateTopUpType('');
-                        router.push('/pages/detail-users');
+                    fetch('/api/logs', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ level: 'info', message: `Users berhasil top up sebesar  `+ data.state_saldo + ' melalui ' + data.state_top_up_type }),
+                    }).then(()=>{
+                        Swal.fire({
+                            icon: "success",
+                            title: "Berhasil",
+                            text: "Berhasil menyimpan data",
+                            showConfirmButton: false,
+                            timer: 1500,
+                        }).then(() => {
+                            setStateSaldo(0);
+                            setStateTopUpType('');
+                            router.push('/pages/detail-users');
+                        });
                     });
+                    
                 }else{
-                    console.log('pin tidak sama')
+                    fetch('/api/logs', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ level: 'info', message: `Users gagal top up karena pin salah  ` }),
+                    }).then(()=>{
+                        Swal.fire({
+                            icon: "error",
+                            title: "error",
+                            text: "Pin yang kamu masukan tidak sesuai!",
+                            showConfirmButton: false,
+                            timer: 1500,
+                        }).then(() => {
+                            setPin(['','','','','','']);
+                        });
+                    });
+                   
                 }
             }
         }

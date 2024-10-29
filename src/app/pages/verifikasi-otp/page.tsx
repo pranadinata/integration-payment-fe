@@ -29,7 +29,7 @@ const VerifikasiOtp = () => {
     fetchOtp();
   };
 
-  const handleDigitClick = (digit: string) => {
+  const handleDigitClick = async (digit: string) => {
     if (activeIndex < otp.length) {
       const newOtp = [...otp];
       newOtp[activeIndex] = digit;
@@ -43,6 +43,13 @@ const VerifikasiOtp = () => {
     if(emptyCount == 0){
         const otpInput = otp.join('');
         if(otpInput === data.otp){
+            await fetch('/api/logs', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ level: 'info', message: `Verifikasi OTP berhasil ` + data.otp }),
+            });
             Swal.fire({
                 icon: "success",
                 title: "Berhasil",
@@ -54,7 +61,14 @@ const VerifikasiOtp = () => {
               });
             
         }else{
-            console.log('otp anda salah');
+            console.log('otp salah');
+            // Swal.fire({
+            //   icon: "error",
+            //   title: "error",
+            //   text: "Pin yang kamu masukan tidak sesuai!",
+            //   showConfirmButton: false,
+            //   timer: 1500,
+            // });
         }
     }
   };
