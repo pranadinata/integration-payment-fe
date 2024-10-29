@@ -6,6 +6,8 @@ import { useState } from "react";
 import { useUsers } from "@/component/data-users-provider";
 import { useRouter } from 'next/navigation';
 
+import { encryptData } from "@/lib/crypto";
+
 import Swal from 'sweetalert2';
 
 const CreatePin = () => {
@@ -34,8 +36,10 @@ const CreatePin = () => {
             // console.log(emptyCount)
             if (emptyCount === 0) {
                 const pinInput = newPin.join(''); 
-               
-                setPinUsers(pinInput);
+
+                const encryptedData = encryptData({ pinInput });
+                
+                setPinUsers(encryptedData);
                 fetch('/api/logs', {
                     method: 'POST',
                     headers: {

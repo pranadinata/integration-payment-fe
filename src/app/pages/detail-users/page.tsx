@@ -35,7 +35,7 @@ const DetailUsers = () => {
                             </div>
                             <div className="py-4">
                                 <p className="font-bold">Pin</p>
-                                <p className="">{ data.pin }</p>
+                                <p className="break-words">{ data.pin }</p>
                             </div>
                             <div className="py-4">
                                 <p className="font-bold">Otp</p>

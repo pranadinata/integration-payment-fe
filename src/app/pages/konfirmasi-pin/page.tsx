@@ -1,9 +1,11 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 import Footer from "@/component/footer";
 import NavbarBack from "@/component/navbarBack";
 import { useState } from "react";
 import { useUsers } from "@/component/data-users-provider";
 import { useRouter } from 'next/navigation';
+import { decryptData } from "@/lib/crypto";
 
 import Swal from 'sweetalert2';
 
@@ -33,7 +35,10 @@ const KonfirmasiPin = () => {
             
             if (emptyCount === 0) {
                 const pinInput = newPin.join('');
-                if(pinInput === data.pin){
+
+                const decrpytPin = decryptData(data.pin);
+               
+                if(pinInput === decrpytPin.pinInput){
                     const total_saldo = data.state_saldo + data.saldo;
                     setSaldo(total_saldo);
                     setTopUpType(data.state_top_up_type);
